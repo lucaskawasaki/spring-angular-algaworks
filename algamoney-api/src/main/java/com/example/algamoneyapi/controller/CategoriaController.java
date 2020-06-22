@@ -45,8 +45,15 @@ public class CategoriaController {
 	}
 	
 	@GetMapping("/{id}")
-	public Optional<Categoria> buscarPeloID(@PathVariable Long id) {
-		return categoriaRepository.findById(id);
+	public ResponseEntity<Categoria> buscarPeloID(@PathVariable Long id) {
+		
+		Optional<Categoria> categoria = categoriaRepository.findById(id);
+		
+		if(categoria.isPresent()) {			
+			return ResponseEntity.ok(categoria.get());
+		}
+		
+		return ResponseEntity.notFound().build();
 	}
 
 }
