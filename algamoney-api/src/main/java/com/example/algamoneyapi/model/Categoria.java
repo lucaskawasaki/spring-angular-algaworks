@@ -12,6 +12,8 @@ import javax.validation.constraints.Size;
 @Table(name="categoria")
 public class Categoria {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@NotNull
