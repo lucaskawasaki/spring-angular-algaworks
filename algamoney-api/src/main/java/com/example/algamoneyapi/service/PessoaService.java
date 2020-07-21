@@ -17,6 +17,20 @@ public class PessoaService {
 	private PessoaRepository pessoaRespository;
 	
 	public Pessoa atualizar(long id, Pessoa pessoa) {
+		Pessoa pessoaAlterada = buscarPessoaPorId(id);		
+		BeanUtils.copyProperties(pessoa, pessoaAlterada, "id");
+		
+		return pessoaRespository.save(pessoaAlterada);
+	}
+	
+	public void atualizarPropriedadeAtivo(Long id, boolean ativo) {
+		Pessoa pessoaAlterada = buscarPessoaPorId(id);
+		pessoaAlterada.setAtivo(ativo);
+		
+		pessoaRespository.save(pessoaAlterada);
+	}
+
+	private Pessoa buscarPessoaPorId(long id) {
 		Optional<Pessoa> pessoaSalva = pessoaRespository.findById(id);
 		
 		if(pessoaSalva.isPresent() == false) {
@@ -24,9 +38,8 @@ public class PessoaService {
 		}
 		
 		Pessoa pessoaAlterada = pessoaSalva.get();		
-		BeanUtils.copyProperties(pessoa, pessoaAlterada, "id");		
 		
-		return pessoaRespository.save(pessoaAlterada);
+		return pessoaAlterada;
 	}
 
 }

@@ -73,6 +73,12 @@ public class PessoaController {
 	public ResponseEntity<Pessoa> alterarPessoa(@PathVariable long id, @Valid @RequestBody Pessoa pessoa){
 				
 		return ResponseEntity.ok(pessoaService.atualizar(id, pessoa));
-	}	
+	}
+	
+	@PutMapping("/{id}/ativo")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void atualizarPropriedadeAtivo(@PathVariable Long id, @RequestBody boolean ativo) {
+		pessoaService.atualizarPropriedadeAtivo(id, ativo);
+	}
 
 }
