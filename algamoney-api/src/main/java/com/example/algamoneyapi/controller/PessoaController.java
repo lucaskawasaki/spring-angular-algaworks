@@ -1,7 +1,6 @@
 package com.example.algamoneyapi.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -22,41 +21,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.algamoneyapi.event.RecursoCriadoEvent;
 import com.example.algamoneyapi.model.Pessoa;
-import com.example.algamoneyapi.repository.PessoaRepository;
 import com.example.algamoneyapi.service.PessoaService;
 
 @RestController
 @RequestMapping("/pessoa")
-public class PessoaController {
-	
-	@Autowired
-	private PessoaRepository pessoaRespository;
-	
-	@Autowired
-	private ApplicationEventPublisher publisher;
+public class PessoaController {	
 	
 	@Autowired
 	private PessoaService pessoaService;
 	
+	@Autowired
+	private ApplicationEventPublisher publisher;
+	
 	@GetMapping("/{id}")
-	public ResponseEntity<Pessoa> selecionarPessoa(@PathVariable Long id){		
-		Optional<Pessoa> pessoa = pessoaRespository.findById(id);
-		
-		return pessoa.isPresent() ? 
-				ResponseEntity.ok(pessoa.get()) : 
-					ResponseEntity.notFound().build();
+	public Pessoa selecionarPessoa(@PathVariable Long id){		
+		return pessoaService.buscarPessoaPorId(id);
 	}
 	
 	@GetMapping
 	public List<Pessoa> listarPessoas(){
 		
-		return pessoaRespository.findAll();
+		return pessoaService.listarPessoas();
 	}
 	
 	@PostMapping
 	public ResponseEntity<Pessoa> salvarPessoa(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response)
 	{
-		Pessoa pessoaSalva = pessoaRespository.save(pessoa);
+		Pessoa pessoaSalva = pessoaService.salvarPessoa(pessoa);
 		
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaSalva.getId()));
 		
@@ -66,7 +57,7 @@ public class PessoaController {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removerPessoa(@PathVariable Long id) {
-		pessoaRespository.deleteById(id);
+		pessoaService.removerPessoa(id);
 	}
 	
 	@PutMapping("/{id}")

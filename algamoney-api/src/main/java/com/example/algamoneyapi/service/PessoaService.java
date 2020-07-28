@@ -1,5 +1,6 @@
 package com.example.algamoneyapi.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
@@ -14,7 +15,11 @@ import com.example.algamoneyapi.repository.PessoaRepository;
 public class PessoaService {
 	
 	@Autowired
-	private PessoaRepository pessoaRespository;
+	private PessoaRepository pessoaRespository;	
+	
+	public List<Pessoa> listarPessoas(){
+		return pessoaRespository.findAll();
+	}
 	
 	public Pessoa atualizar(long id, Pessoa pessoa) {
 		Pessoa pessoaAlterada = buscarPessoaPorId(id);		
@@ -29,17 +34,23 @@ public class PessoaService {
 		
 		pessoaRespository.save(pessoaAlterada);
 	}
+	
+	public Pessoa salvarPessoa(Pessoa pessoa) {
+		return pessoaRespository.save(pessoa);		
+	}
 
-	private Pessoa buscarPessoaPorId(long id) {
-		Optional<Pessoa> pessoaSalva = pessoaRespository.findById(id);
+	public Pessoa buscarPessoaPorId(long id) {
+		Optional<Pessoa> pessoa = pessoaRespository.findById(id);
 		
-		if(pessoaSalva.isPresent() == false) {
+		if(pessoa.isPresent() == false) {
 			throw new EmptyResultDataAccessException("Pessoa não encontrada", 1);
 		}
 		
-		Pessoa pessoaAlterada = pessoaSalva.get();		
-		
-		return pessoaAlterada;
+		return pessoa.get();
+	}
+	
+	public void removerPessoa(long id) {
+		pessoaRespository.deleteById(id);
 	}
 
 }

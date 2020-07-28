@@ -108,6 +108,14 @@ public class Lancamento {
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
 	}
+	
+	public void setTipo(TipoLancamento tipo) {
+		this.tipo = tipo;
+	}
+	
+	public TipoLancamento getTipo() {
+		return tipo;
+	}
 
 	@Override
 	public int hashCode() {
