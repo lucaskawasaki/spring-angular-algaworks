@@ -59,4 +59,8 @@ public class LancamentoService {
 		}
 	}
 
+	public void removerLancamento(Long id) {
+		lancamentoRepository.deleteById(id);		
+	}
+
 }
