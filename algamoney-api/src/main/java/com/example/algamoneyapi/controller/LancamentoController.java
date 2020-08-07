@@ -23,6 +23,7 @@ import com.example.algamoneyapi.exceptionhandler.Erro;
 
 import com.example.algamoneyapi.event.RecursoCriadoEvent;
 import com.example.algamoneyapi.model.Lancamento;
+import com.example.algamoneyapi.repository.filter.LancementoFilter;
 import com.example.algamoneyapi.service.LancamentoService;
 import com.example.algamoneyapi.service.execption.PessoaInativaException;
 import com.example.algamoneyapi.service.execption.PessoaInexistenteException;
@@ -41,8 +42,8 @@ public class LancamentoController {
 	private MessageSource messageSource;
 	
 	@GetMapping
-	public List<Lancamento> listar(){
-		return lancamentoService.listar();
+	public List<Lancamento> pesquisar(LancementoFilter filter){
+		return lancamentoService.listar(filter);
 	}
 	
 	@GetMapping("/{id}")

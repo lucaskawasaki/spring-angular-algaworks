@@ -3,8 +3,9 @@ package com.example.algamoneyapi.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.algamoneyapi.model.Lancamento;
+import com.example.algamoneyapi.repository.lancemento.LancementoRepositoryQuery;
 
 
-public interface LancamentoRepository extends JpaRepository<Lancamento, Long>{
+public interface LancamentoRepository extends JpaRepository<Lancamento, Long>, LancementoRepositoryQuery{
 
 }

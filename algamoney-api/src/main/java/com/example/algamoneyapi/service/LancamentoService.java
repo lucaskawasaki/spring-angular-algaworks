@@ -11,6 +11,7 @@ import com.example.algamoneyapi.model.Lancamento;
 import com.example.algamoneyapi.model.Pessoa;
 import com.example.algamoneyapi.repository.LancamentoRepository;
 import com.example.algamoneyapi.repository.PessoaRepository;
+import com.example.algamoneyapi.repository.filter.LancementoFilter;
 import com.example.algamoneyapi.service.execption.PessoaInativaException;
 import com.example.algamoneyapi.service.execption.PessoaInexistenteException;
 
@@ -23,8 +24,8 @@ public class LancamentoService {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 	
-	public List<Lancamento> listar(){
-		return lancamentoRepository.findAll();
+	public List<Lancamento> listar(LancementoFilter filter){
+		return lancamentoRepository.filtrar(filter);
 	}
 	
 	public Lancamento buscarPorID(long id) {
