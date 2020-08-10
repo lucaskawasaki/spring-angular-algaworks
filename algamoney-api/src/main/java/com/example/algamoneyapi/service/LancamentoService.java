@@ -1,10 +1,11 @@
 package com.example.algamoneyapi.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.algamoneyapi.model.Lancamento;
@@ -24,8 +25,8 @@ public class LancamentoService {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 	
-	public List<Lancamento> listar(LancementoFilter filter){
-		return lancamentoRepository.filtrar(filter);
+	public Page<Lancamento> listar(LancementoFilter filter, Pageable pageable){
+		return lancamentoRepository.filtrar(filter, pageable);
 	}
 	
 	public Lancamento buscarPorID(long id) {
@@ -61,6 +62,10 @@ public class LancamentoService {
 
 	public void removerLancamento(Long id) {
 		lancamentoRepository.deleteById(id);		
+	}
+
+	public int selecionarQuantidade() {		
+		return lancamentoRepository.findAll().size();
 	}
 
 }

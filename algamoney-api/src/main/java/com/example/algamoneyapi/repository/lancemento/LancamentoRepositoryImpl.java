@@ -11,10 +11,12 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
 import com.example.algamoneyapi.model.Lancamento;
-import com.example.algamoneyapi.model.metamodel.Lancamento_;
 import com.example.algamoneyapi.repository.filter.LancementoFilter;
 
 public class LancamentoRepositoryImpl implements LancementoRepositoryQuery {
@@ -23,7 +25,7 @@ public class LancamentoRepositoryImpl implements LancementoRepositoryQuery {
 	private EntityManager manager;
 
 	@Override
-	public List<Lancamento> filtrar(LancementoFilter lancamentoFilter) {
+	public Page<Lancamento> filtrar(LancementoFilter lancamentoFilter, Pageable pageable) {
 
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<Lancamento> criteria = builder.createQuery(Lancamento.class);
@@ -33,8 +35,20 @@ public class LancamentoRepositoryImpl implements LancementoRepositoryQuery {
 		criteria.where(predicates);
 		
 		TypedQuery<Lancamento> query = manager.createQuery(criteria);
+		adicionarRestricoesDePaginacao(query, pageable);
+		List<Lancamento> lancamento = query.getResultList();
 		
-		return query.getResultList();
+		return new PageImpl<Lancamento>(lancamento, pageable, lancamento.size());
+	}	
+
+	private void adicionarRestricoesDePaginacao(TypedQuery<Lancamento> query, Pageable pageable) {
+		int paginaAtual = pageable.getPageNumber();
+		int totalRegistrosPorPagina = pageable.getPageSize();
+		int primeiroRegistroPagina = paginaAtual * totalRegistrosPorPagina;
+		
+		query.setFirstResult(primeiroRegistroPagina);
+		query.setMaxResults(totalRegistrosPorPagina);
+		
 	}
 
 	private Predicate[] criarRestricoes(LancementoFilter lancamentoFilter, CriteriaBuilder builder,
