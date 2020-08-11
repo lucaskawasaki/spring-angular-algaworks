@@ -1,11 +1,8 @@
-package com.example.algamoneyapi.model.metamodel;
+package com.example.algamoneyapi.model;
 
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
-
-import com.example.algamoneyapi.model.Endereco;
-import com.example.algamoneyapi.model.Pessoa;
 
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
 @StaticMetamodel(Pessoa.class)
