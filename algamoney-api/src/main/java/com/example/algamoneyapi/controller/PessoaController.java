@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,17 +35,20 @@ public class PessoaController {
 	private ApplicationEventPublisher publisher;
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA')")
 	public Pessoa selecionarPessoa(@PathVariable Long id){		
 		return pessoaService.buscarPessoaPorId(id);
 	}
 	
 	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA')")
 	public List<Pessoa> listarPessoas(){
 		
 		return pessoaService.listarPessoas();
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA')")
 	public ResponseEntity<Pessoa> salvarPessoa(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response)
 	{
 		Pessoa pessoaSalva = pessoaService.salvarPessoa(pessoa);
@@ -55,18 +59,21 @@ public class PessoaController {
 	}
 	
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('ROLE_REMOVER_PESSOA')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removerPessoa(@PathVariable Long id) {
 		pessoaService.removerPessoa(id);
 	}
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA')")
 	public ResponseEntity<Pessoa> alterarPessoa(@PathVariable long id, @Valid @RequestBody Pessoa pessoa){
 				
 		return ResponseEntity.ok(pessoaService.atualizar(id, pessoa));
 	}
 	
 	@PutMapping("/{id}/ativo")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void atualizarPropriedadeAtivo(@PathVariable Long id, @RequestBody boolean ativo) {
 		pessoaService.atualizarPropriedadeAtivo(id, ativo);

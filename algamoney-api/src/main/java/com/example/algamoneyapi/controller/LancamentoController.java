@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,11 +47,13 @@ public class LancamentoController {
 	private MessageSource messageSource;
 	
 	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO')")
 	public Page<Lancamento> pesquisar(LancementoFilter filter, Pageable pageable){
 		return lancamentoService.listar(filter, pageable);
 	}
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO')")
 	public Lancamento selecionarLancamento(@PathVariable Long id){
 		return lancamentoService.buscarPorID(id);
 	}
@@ -61,12 +64,14 @@ public class LancamentoController {
 	}
 	
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('ROLE_REMOVER_LANCAMENTO')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removerLancamento(@PathVariable Long id) {
 		lancamentoService.removerLancamento(id);
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO')")
 	public ResponseEntity<Lancamento> salvarLancamento(@Valid @RequestBody Lancamento lancamento, HttpServletResponse response){
 		
 		Lancamento lancamentoSalvo = lancamentoService.salvar(lancamento);
