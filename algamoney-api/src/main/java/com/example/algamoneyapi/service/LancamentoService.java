@@ -13,6 +13,7 @@ import com.example.algamoneyapi.model.Pessoa;
 import com.example.algamoneyapi.repository.LancamentoRepository;
 import com.example.algamoneyapi.repository.PessoaRepository;
 import com.example.algamoneyapi.repository.filter.LancementoFilter;
+import com.example.algamoneyapi.repository.projection.ResumoLancamento;
 import com.example.algamoneyapi.service.execption.PessoaInativaException;
 import com.example.algamoneyapi.service.execption.PessoaInexistenteException;
 
@@ -27,6 +28,10 @@ public class LancamentoService {
 	
 	public Page<Lancamento> listar(LancementoFilter filter, Pageable pageable){
 		return lancamentoRepository.filtrar(filter, pageable);
+	}
+	
+	public Page<ResumoLancamento> resumir(LancementoFilter filter, Pageable pageable){
+		return lancamentoRepository.resumir(filter, pageable);
 	}
 	
 	public Lancamento buscarPorID(long id) {
